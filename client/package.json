@@ -1,0 +1,63 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:5000",
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^13.5.0",
+    "ace-builds": "^1.39.0",
+    "axios": "^1.8.1",
+    "bootstrap": "^5.3.3",
+    "framer-motion": "^12.4.7",
+    "highlight.js": "^11.11.1",
+    "marked": "^15.0.6",
+    "monaco-editor": "^0.52.2",
+    "monaco-themes": "^0.4.4",
+    "prismjs": "^1.29.0",
+    "react": "^19.0.0",
+    "react-ace": "^14.0.1",
+    "react-bootstrap": "^2.10.9",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dom": "^19.0.0",
+    "react-loading": "^2.0.3",
+    "react-markdown": "^9.1.0",
+    "react-router-dom": "^7.2.0",
+    "react-scripts": "5.0.1",
+    "react-simple-code-editor": "^0.14.1",
+    "rehype-highlight": "^7.0.2",
+    "rehype-react": "^8.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.1",
+    "socket.io-client": "^4.8.1",
+    "unified": "^11.0.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

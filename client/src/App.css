@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  background-color: #000000;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+  padding: 0rem;
+  display: flex;
+  gap: 0rem;
+}
+.container-fluid{
+  height: 100%;
+  width: 100%;
+}
+main .left, main .right {
+  height: 100%;
+  flex-basis: 50%;
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+
+
+main .left {
+  background-color: #000000;
+  position: relative; /* Ensures absolute positioning works */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.left .code {
+  flex: 1;
+  overflow: auto;
+  border-radius: 0.7rem;
+  background-color: #0a0909;
+  padding: 10px;
+  color: white !important;
+}
+
+.left .code textarea {
+  height: 100%;
+  width: 100%;
+  border: none;
+  background: transparent !important;
+  color: white !important;
+
+  font-family: "Fira Code", monospace;
+  font-size: 1rem;
+  outline: none;
+  white-space: pre;
+  overflow: auto;
+}
+
+
+
+
+.main-buttons {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 0.5em; /* Adds spacing between buttons */
+  margin-top: 2px;
+}
+
+.main-buttons .review,
+.main-buttons .new-button,
+.main-buttons .help {
+  background-color: rgb(219, 219, 255);
+  color: #000000;
+  padding: 0.5em 1.5em;
+  font-weight: 500;
+  font-size: clamp(12px, 2vw, 16px);
+  cursor: pointer;
+  user-select: none;
+  width: max-content; /* Allows the button to shrink */
+  min-width: 80px;
+  border-radius: 0.7rem;
+  text-align: center;
+  border: none;
+}
+
+main .right {
+  background-color: #343434;
+  padding: 0rem 1rem;
+  color: white;
+  font-size: 1rem;
+  overflow: auto;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3498db;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+  margin-top: 50%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* ###################  THERAPIST   ######################## */
+.message.user {
+  text-align: right;
+  margin-left: auto;
+  margin-right: 25em;
+  min-width: 0;
+  max-width: 70%;
+  width: fit-content; /* Dynamically adjusts width */
+  word-wrap: break-word; /* Ensures text wraps within the box */
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #007bff; /* Example background color */
+  color: white; /* Text color */
+}
+
+.message.ai {
+  background-color: rgb(33,33,33);
+  text-align: center;
+  width: fit-content;
+  /* word-wrap: break-word; */
+  display: flex;
+  min-width: 40%;     /* uper wala line se beech me hoga ya hatega  */
+ border: none;
+  max-width: 90%;
+  
+  color:"white";
+  display: flex;
+  flex-direction: column;
+  align-self: center; /* Works if the parent has display: flex with flexDirection: column */
+  margin: 0 auto;
+}
+input::placeholder {
+  color: white; /* Change to your desired color */
+  opacity: 1; /* Ensures full color visibility */
+}
+
+
