@@ -10,18 +10,20 @@ import MonacoEditor from "@monaco-editor/react";
 const defaultCode = {
   javascript: `function sum() {\n  return 1 + 1;\n}`,
   python: `def sum():\n  return 1 + 1`,
-  cpp: `#include <iostream>  \nusing namespace std; \n\nint main(){\n  cout << "Hello, World!" << endl;\n  return 0;\n}`,
+  cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << "Hello, World!" << endl;\n  return 0;\n}`,
   java: `public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}`,
   csharp: `using System;\n\npublic class Program\n{\n    public static void Main(string[] args)\n    {\n        Console.WriteLine("Hello, World!");\n    }\n}`,
   golang: `package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}`,
   ruby: `puts "Hello, World!"`,
 };
 
+
 //Valid Monaco themes
 const monacoThemes = [
   { value: "vs-dark", label: "VS Dark" },
   { value: "vs", label: "VS Light" },
   { value: "hc-black", label: "HC Black" },
+
 ];
 
 const Homepage = () => {
@@ -36,7 +38,6 @@ const Homepage = () => {
   const [fontSize, setFontSize] = useState(16);
   const [leftPanelWidth, setLeftPanelWidth] = useState(50); // Initial width of the left panel in percentage
   const resizerRef = useRef(null);
-  const monacoEditorRef = useRef(null); // Ref for Monaco Editor
 
   useEffect(() => {
     setCode(defaultCode[language]);
@@ -52,7 +53,7 @@ const Homepage = () => {
       setReview(response.data);
     } catch (error) {
       setReview(
-        `Error fetching ${endpoint}. Please try again. Details: ${error.message}`
+        Error `fetching ${endpoint}. Please try again. Details: ${error.message}`
       );
     } finally {
       setLoading(false);
@@ -81,13 +82,13 @@ const Homepage = () => {
       });
 
       if (response.data.error) {
-        setOutput(`Error: ${response.data.error}`);
+        setOutput(Error `${response.data.error}`);
       } else {
         setOutput(response.data.output || "No output");
       }
     } catch (error) {
       setOutput(
-        `Error executing code. Check console for details: ${error.message}`
+        Error `executing code. Check console for details: ${error.message}`
       );
       console.error("Execution error:", error);
     } finally {
@@ -130,15 +131,28 @@ const Homepage = () => {
       setLeftPanelWidth(newLeftPanelWidth);
     }
   };
+  const handleTouchResize = (e) => {
+    if (e.touches && e.touches.length > 0) {
+      const touch = e.touches[0];
+      const newLeftPanelWidth = (touch.clientX / window.innerWidth) * 100;
+      if (newLeftPanelWidth > 8 && newLeftPanelWidth < 90) {
+        setLeftPanelWidth(newLeftPanelWidth);
+      }
+    }
+  };
 
   const handleMouseUp = () => {
     document.removeEventListener("mousemove", handlePanelResize);
     document.removeEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("touchmove", handleTouchResize); // Remove touchmove listener
+    document.removeEventListener("touchend", handleMouseUp);
   };
 
   const handleMouseDown = (e) => {
     document.addEventListener("mousemove", handlePanelResize);
-    document.removeEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchmove", handleTouchResize); // Add touchmove listener
+    document.addEventListener("touchend", handleMouseUp); // Use the same mouseup handler for touchend
   };
   const monacoOptions = {
     selectOnLineNumbers: true,
@@ -154,6 +168,7 @@ const Homepage = () => {
     showUnused: false,
     showDeprecated: false,
   };
+
 
   return (
     <div className="vh-100 w-100">
@@ -173,7 +188,6 @@ const Homepage = () => {
             className="left"
             style={{
               position: "relative",
-              overflow: "hidden", // Prevent internal content from overflowing
             }}
           >
             {/* Resizer */}
@@ -190,6 +204,7 @@ const Homepage = () => {
                 zIndex: 10, // Ensure it's above other elements
               }}
               onMouseDown={handleMouseDown}
+              onTouchStart={handleMouseDown} // Add touch start listener
             ></div>
             <div className="code " style={{ padding: "0px" }}>
               <div className="d-flex justify-content-around">
@@ -233,7 +248,7 @@ const Homepage = () => {
                       backgroundColor: "#333",
                       color: "wheat",
                       padding: "1px",
-                      margin: "2px",
+                      margin: "2px"
                     }}
                   >
                     {monacoThemes.map((theme) => (
@@ -242,6 +257,8 @@ const Homepage = () => {
                       </option>
                     ))}
                   </select>
+
+
 
                   <select
                     className="form-control"
@@ -253,7 +270,7 @@ const Homepage = () => {
                       width: "5em",
                       margin: "1px",
 
-                      padding: "1px",
+                      padding: "1px"
                     }}
                   >
                     <option value="javascript">JavaScript </option>
@@ -268,8 +285,7 @@ const Homepage = () => {
               </div>
 
               <MonacoEditor
-                ref={monacoEditorRef}
-                height="calc(100vh - 14em)" // Reduced height for Monaco editor
+                height="100vh"
                 width="100%"
                 language={getMonacoLanguage()}
                 theme={theme}
