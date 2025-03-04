@@ -1,0 +1,40 @@
+{
+  "short_name": "CodeMentor",
+  "name": "CodeMentor Ai",
+  "icons": [
+    {
+      "src": "codementor.jpg",
+      "type": "image/jpeg",
+      "sizes": "64x64"
+    },
+    {
+      "src": "codementor.jpg",
+      "type": "image/jpeg",
+      "sizes": "32x32"
+    },
+    {
+      "src": "codementor.jpg",
+      "type": "image/jpeg",
+      "sizes": "24x24"
+    },
+    {
+      "src": "codementor.jpg",
+      "type": "image/jpeg",
+      "sizes": "16x16"
+    },
+    {
+      "src": "codementor.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "codementor.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
