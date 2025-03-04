@@ -1,39 +1,42 @@
-require('dotenv').config()
+require('dotenv').config();
 const path = require('path');
-const runrouter=require("./routes/executeroute")
-
 const express = require('express');
-const aiRoutes = require('./routes/ai.routes')
-const cors = require('cors')
+const cors = require('cors');
 
-const app = express()
+const runrouter = require("./routes/executeroute");
+const aiRoutes = require('./routes/ai.routes');
 
+const app = express();
+
+// Enable CORS
 app.use(cors({
-    origin: "*",
-    credentials: true
-  }));
+  origin: "*",
+  credentials: true
+}));
 
+// Middleware to parse JSON
+app.use(express.json());
 
-app.use(express.json())
+// API Routes
+app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/code', runrouter);
 
-
-
-app.use('/api/v1/ai', aiRoutes)
-app.use('/api/v1/code',runrouter)
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+// Serve React build in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build"))); 
+  const buildPath = path.join(__dirname, "../client/build");
+  app.use(express.static(buildPath));
 
-  // Serve React app for non-API requests
   app.get("*", (req, res) => {
-    if (!req.originalUrl.startsWith("/api")) {
-      res.sendFile(path.join(__dirname, "../client/build/index.html")); 
-    }
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Hello World (Development Mode)");
   });
 }
 
-app.listen(5000, () => {
-    console.log('Server is running on http://localhost:5000')
-})
+// Start Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
