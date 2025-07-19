@@ -550,7 +550,6 @@
 // export default ChatInterface;
 
 
-
 import React, { useState, useEffect, useRef } from "react";
 import "prismjs/themes/prism-tomorrow.css";
 import prism from "prismjs";
