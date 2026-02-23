@@ -357,65 +357,60 @@
 
 
 
-
 const axios = require('axios');
 
-const pistonApiEndpoint = 'https://emkc.org/api/v2/piston/execute';
+const JUDGE0_URL = "https://ce.judge0.com/submissions";
 
 module.exports.execute = async (req, res) => {
     const language = req.body.language;
     const code = req.body.code;
     const input = req.body.input || '';
-    const version = "*"; // Uses the latest version by default
-
-    console.log("Language:", language);
-    console.log("Code:\n", code);
-    console.log("Input:\n", input);
-
-    // Construct execution data
-    let executionData = {
-        language: language,
-        files: [{ content: code }],
-        stdin: input,  // Input passed for all languages
-        version: version
-    };
 
     try {
-        const pistonResponse = await axios.post(pistonApiEndpoint, executionData);
-        console.log("Response from Piston:", pistonResponse.data);
+        const response = await axios.post(
+            `${JUDGE0_URL}?base64_encoded=false&wait=true`,
+            {
+                source_code: code,
+                stdin: input,
+                language_id: getLanguageId(language)
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
 
-        const { run, compile } = pistonResponse.data;
+        const result = response.data;
 
-        // Handle compilation and runtime errors separately
-        const compileErrors = compile?.stderr || ''; 
-        const runtimeErrors = run?.stderr || '';  
-
-        const output = run?.stdout || '';  
-        const errors = compileErrors + runtimeErrors;  
-        const exitCode = run?.code || -1;
-
-        console.log("Output:", output);
-        console.log("Errors:", errors);
-        console.log("Exit Code:", exitCode);
-
-        res.json({ output, error: errors, exitCode });
+        res.json({
+            output: result.stdout || "",
+            error: result.stderr || result.compile_output || "",
+            exitCode: result.status?.id || 0
+        });
 
     } catch (error) {
-        console.error("Error calling Piston API:", error);
+        console.error("Judge0 Error:", error.response?.data || error.message);
 
-        if (error.response) {
-            console.error("API Error Response:", error.response.data);
-            return res.status(error.response.status).json({
-                error: `Piston API Error: ${error.response.data.message || 'Unknown error'}`,
-                output: '',
-                exitCode: -1
-            });
-        } else if (error.request) {
-            console.error("Network Error:", error.request);
-            return res.status(500).json({ error: "Network error reaching Piston API", output: '', exitCode: -1 });
-        } else {
-            console.error("Internal Server Error:", error);
-            return res.status(500).json({ error: "Internal server error", output: '', exitCode: -1 });
-        }
+        res.status(500).json({
+            output: "",
+            error: "Execution failed",
+            exitCode: -1
+        });
     }
 };
+
+function getLanguageId(language) {
+    const map = {
+        javascript: 63,
+        python: 71,
+        cpp: 54,
+        java: 62,
+        csharp: 51,       // C#
+        "c#": 51,         // C# alias
+        go: 60,           // Go
+        ruby: 72          // Ruby
+    };
+
+    return map[language.toLowerCase()];
+}
