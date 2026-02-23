@@ -864,6 +864,14 @@ Understanding nested loops and call stacks
 
 
 async function generateContent(prompt, role, context = []) {
+     console.log("=== ENV DEBUG START ===");
+    console.log("ENV EXISTS:", !!process.env.OPENROUTER_API_KEY);
+    console.log("ENV LENGTH:", process.env.OPENROUTER_API_KEY?.length);
+    console.log(
+        "ENV PREFIX:",
+        process.env.OPENROUTER_API_KEY?.slice(0, 15)
+    );
+    console.log("=== ENV DEBUG END ===");
     console.time("generateContent");
 
     const systemInstruction =
