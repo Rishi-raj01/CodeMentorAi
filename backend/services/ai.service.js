@@ -916,7 +916,9 @@ async function generateContent(prompt, role, context = []) {
             {
                 headers: {
                     Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://code-mentor-tau.vercel.app/", // your domain
+                     "X-Title": "Code Mentor"
                 }
             }
         );
